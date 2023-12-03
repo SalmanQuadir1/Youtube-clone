@@ -13,7 +13,7 @@ const Head = () => {
             </div>
             <div className='col-span-10 text-center   my-2'>
                 <input className='border border-gray-600 p-2 rounded-l-full w-2/4 ' type="text" />
-                <button className='border border-gray-600 px-5 py-2 rounded-r-full'>🔍</button>
+                <button className='border border-gray-600 px-5 bg-slate-100 py-2 rounded-r-full'>🔍</button>
             </div>
             <div className='col-span-1 mt-3'>
                 <img className='h-8' src="https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg" alt="user" />
