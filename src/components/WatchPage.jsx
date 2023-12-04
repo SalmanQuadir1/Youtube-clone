@@ -13,7 +13,7 @@ const WatchPage = () => {
     }, [])
     return (
         <div className='m-5 '>
-            <iframe width="800" height="415" src={"https://www.youtube.com/embed/" + searchVideoKey + "?autoplay=1&mute=1"} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+            <iframe width="800" height="445" src={"https://www.youtube.com/embed/" + searchVideoKey + "?autoplay=1&mute=1"} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
         </div>
     )
 }
