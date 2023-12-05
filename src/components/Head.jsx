@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleMenu } from '../utils/appSlice';
 import { YOUTUBE_SEARCH_API } from '../utils/constants';
+import { cacheResults } from '../utils/searchSlice';
 
 const Head = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [suggestionList, setSuggestionList] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
-
+    const searchCache = useSelector(store => store.search);
+    const dispatch = useDispatch();
 
     useEffect(() => {
 
         //Debouncing with 200ms
-        const timer = setTimeout(() => getSearchSuggestions(), 200);
+        const timer = setTimeout(() => {
+            if (searchCache[searchQuery]) {
+                setSuggestionList(searchCache[searchQuery]);
+            } else {
+                getSearchSuggestions()
+            }
+
+        }, 200);
         return () => {
             clearTimeout(timer);
         }
@@ -24,11 +33,13 @@ const Head = () => {
         const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
         const json = await data.json();
         setSuggestionList(json[1]);
+        dispatch(cacheResults({
+            [searchQuery]: json[1]
+        }))
 
     }
 
 
-    const dispatch = useDispatch();
 
     return (
         <div className='grid grid-flow-col p-4  my-1 shadow-lg'>
@@ -37,7 +48,7 @@ const Head = () => {
                 <img className='h-14' src="https://t3.ftcdn.net/jpg/03/00/38/90/360_F_300389025_b5hgHpjDprTySl8loTqJRMipySb1rO0I.jpg" alt="" />
 
             </div>
-            <div className='col-span-10 px-10  my-2'>
+            <div className='col-span-10 px-10  my-2 relative'>
                 <div>
                     <input className='border border-gray-600 p-2 rounded-l-full w-4/6'
                         value={searchQuery}
@@ -48,13 +59,13 @@ const Head = () => {
                     <button className='border border-gray-600 px-5 bg-slate-100 py-2 rounded-r-full'>🔍</button>
 
                 </div>
-                {showSuggestions !== "" && (
+                {showSuggestions && (
 
 
-                    <div className='fixed px-2 py-5 w-[35rem] bg-white shadow-lg rounded-lg border border-gray-100'>
+                    <div className=' absolute  px-2 py-5 w-4/6 bg-white shadow-lg rounded-lg border border-gray-100'>
                         <ul>
                             {suggestionList && suggestionList.map(suggesion => (
-                                <li key={suggesion} className='py-2 shadow-sm hover:bg-gray-100 cursor-pointer flex '>🔍 {suggesion}</li>
+                                <li key={suggesion} onClick={() => setSearchQuery(suggesion)} className='py-2 shadow-sm hover:bg-gray-100 cursor-pointer flex '>🔍 {suggesion}</li>
                             ))}
 
 
